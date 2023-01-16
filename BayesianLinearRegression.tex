@@ -18,7 +18,8 @@ In Bayes, we assume that y is not estimated as a single value, but drawn from a 
 \end{comment}
 
 $\hat{w} = \arg\max_w P(w|X,y) = \arg\max_w (\frac{1}{Z}) P(w|X) \prod_i P(y_i|w,x_i)$\\
-$P(\hat{w}|X,y) = \cN(\hat{w}; (X^TX + \frac{\sigma_n^2}{\sigma_p^2}I)^{-1} X^Ty, (\sigma_n^{-2}X^TX + \sigma_p^{-2}I)^{-1})$\\
+
+$P({w}|X,y) = \cN({w}; (X^TX + \frac{\sigma_n^2}{\sigma_p^2}I)^{-1} X^Ty, (\sigma_n^{-2}X^TX + \sigma_p^{-2}I)^{-1})$\\
 \begin{comment} 
 	Assumes the weights to be Gaussian and the noise of the labels from $P(y|x,w)$ to be i.i.d. Gaussian.\\
 	If we would not assume a prior, we would get the MLE, which are simply mean and variance of the given data (No regularization in Ridge regression).\\
@@ -42,3 +43,5 @@ $P(\hat{w}|X,y) = \cN(\hat{w}; (X^TX + \frac{\sigma_n^2}{\sigma_p^2}I)^{-1} X^Ty
 	The variance of the weights can then be derived from these two equations.\\
 \end{comment}
 
+
+\textbf{Online} $X^T X$ by def $ X_t^T X_t + x_{t+1} x_{t+1}^T$; inverse Woodbury

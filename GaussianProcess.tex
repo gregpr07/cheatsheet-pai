@@ -9,7 +9,9 @@
 	In Bayesian linear regression we modelled the distribution over the weights.\\
 \end{comment}
 
+\begin{comment}
 \textbf{Introduce non-linearity:} $f(x) = w^T \phi(x) \Rightarrow$ dim. explosion\\
+\end{comment}
 
 \textbf{Kernel:} $x_i^T x_j \Rightarrow \phi(x)^T \phi(x) = k(x_i, x_j)$\\
 
@@ -20,7 +22,7 @@
 	The conversion from weight space to function space happens through linear transformation of the weights, this assumes X to be constant!\\
 \end{comment}
 
-\textbf{Predict:} $y^* = f^* + \epsilon \sim \cN(0, \sigma_p^2 \hat{X}\hat{X}^T + \sigma_n^2 I)$, $\hat{X}^T = [X^T,x^*]$ \\
+$y^* = f^* + \epsilon \sim \cN(0, \sigma_p^2 \hat{X}\hat{X}^T + \sigma_n^2 I)$, $\hat{X}^T = [X^T,x^*]$ \\
 \begin{comment}
 	Data only enters through the inner products, which make kernels very useful.
 	The it models how new data correlates with already given data.\\
@@ -37,8 +39,14 @@
 \end{comment}
 
 $P(f|X_A,y_A) = GP(f; 
-\mu(x) + k_{x,A}(K_{AA} + \sigma_n^2 I)^{-1}(y - \mu_A),\\
-k(x,x') - k_{x,A}^T(K_{AA} + \sigma_n^2 I)^{-1} k_{x',A}))$\\
+\mu(x) + k_{x,A}^T(K_{AA} + \sigma_n^2 I)^{-1}(y - \mu_A),\\
+k(x,x') - k_{x,A}^T(K_{AA} + \sigma_n^2 I)^{-1} k_{x',A}))$ \textbf{Pred}: $x,x': x^*$; GP: $\mathcal{N}$
+
+\textbf{Pred:}
+$f^* | x^*, x_{1:n}, y_{1:n} \sim \mathcal{N}(\mu(x^*) + k_{x^*,A}^T(K_{AA} + \sigma_n^2 I)^{-1}(y - \mu_A),
+k(x^*,x^*) - k_{x^*,A}^T(K_{AA} + \sigma_n^2 I)^{-1} k_{x^*,A}))$
+
+
 \begin{comment}
 	\textbf{Cost:} Size of $K_{AA}$ is $|X_A|\times |X_A|$, cost of inversion $O(|X_A|^3)$. 
 	$k_{x',X_A}$ is a $|X_A|$ vector, evaluating x' against all elements from $X_A$.\\
@@ -69,11 +77,30 @@ $= \argmax \int \cN(y; f(x), \sigma_n^2) \cN(f; 0, K_f(\theta))
 
 \textbf{Bochner:} Shift-invariant kernel p.d. $\Leftrightarrow$ $p(\omega)$ non-negative\\
 
+$k(x,x') = z(x)^T z(x')$
+\textbf{1.} $p(\omega) = \frac{1}{2 \pi} k(\Delta) e^{-i \omega^T \Delta} d \Delta$
+\textbf{2.} sample $\omega_{1:m} \sim p(w)$; $b_{1:m} \sim U([0,2 \pi])$
+\textbf{3.} $z_{\omega, b}(x) = \sqrt{2} \cos (\omega^T x + b)$
+$z(x) = \frac{1}{\sqrt{m}} [z_{\omega_i, b_i}(x), ...]^T$
+
+\textbf{Ind. p.}
+$p(f^*, f) \approx q(f^*, f) = \int q(f^* | u) q(f | u) p(u) du$;
+$p(f|u) = \mathcal{N}(K_{f,u}K_{u,u}^{-1}u, K_{f,f} - Q_{f,f})$;
+$Q_{a,b} = K_{a,u} K{u,u}^{-1}K_{u,b}$
+\begin{comment}
+;$f \rightarrow f^*$
+\end{comment}
+\begin{comment}
+$p(f^*|u) = \mathcal{N}(K_{f^*,u}K_{u,u}^{-1}u, K_{f^*,f^*} - Q_{f^*,f^*})$
+\end{comment}
+
+
+
 \subsection{Kernel}
 \textbf{Correlation:} $k(x_1, x_2) = Cov(f(x_1), f(x_2))$\\
 $\forall x,x',k(x, x') = k(x', x)$, p.s.d (positive EV) $x^T K_{AA} x \geq 0$.\\
 \textbf{Composition:} +,$\cdot$,$k\cdot const.$, $poly(f)$, $\exp(f)$ give again kernels\\
-\textbf{Stationary:} if it holds $k(x,x') = k(x-x')$\\
+\textbf{Stationary (shift invariant):} if it holds $k(x,x') = k(x-x')$\\
 \textbf{Isotropic:} $k(x,x') = k(||x-x'||_2)$, implies stationary\\
 \begin{comment}
 	After fitting to a sample point, the posterior is not isotropic, since the variance is decreased in the region of the sample.\\
@@ -81,8 +108,8 @@ $\forall x,x',k(x, x') = k(x', x)$, p.s.d (positive EV) $x^T K_{AA} x \geq 0$.\\
 
 \textbf{Linear:} $k(x,x') = x^T x'$ = Bayesian linear regression\\
 \textbf{Poly2:} $k(x,x') = \phi(x)^T \phi(x'), \phi(x) = [1, x, x^2]$\\
-\textbf{Exp$^2$:} $k(x,x') = \exp(-||x - x'||_2^2 / h^2)$, decay with distance \\
-\textbf{Exp:} $k(x,x') = \exp(-||x - x'||_1 / h)$, decay with distance \\
+\textbf{Exp$^2$:} $k(x,x') = \exp(-||x - x'||_2^2 / h^2)$, higher h, more smooth \\
 \begin{comment}
+\textbf{Exp:} $k(x,x') = \exp(-||x - x'||_1 / h)$, decay with distance \\
 	\textbf{Visual smoothness:} The bigger h is, the higher is the radius of influence. This means that the functions appear much smoother.\\
 \end{comment} 

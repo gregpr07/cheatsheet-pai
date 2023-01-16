@@ -69,6 +69,8 @@ $I(X;Y) = H(Y) - H(Y|X) = H(Y) - H(\epsilon) \\
 	But, those are also the points with the largest variance (aleatoric noise), since they are farthest away from the "source" cluster. So if the aleatoric noise is high, the decision boundary might choose weird points and don't get a proper fit.\\
 \end{comment}
 
+\textbf{Submod} $A \subseteq B \subseteq D$; $F(A \cup {x}) - F(A) \geq F(B \cup {x}) - F(B)$
+
 \section{Bayesian Optimization}
 \begin{comment}
 	For example synthesizing molecules or choosing hyperparameters of neural networks, we want some kind of process to derive the next parameters to try out.
@@ -90,7 +92,7 @@ $I(X;Y) = H(Y) - H(Y|X) = H(Y) - H(\epsilon) \\
 	We assume here that the GP we are looking at has the function enclosed. This means, that the maximum of the function must be at least as high as the maximum lower bound. We can focus on the regions where this is true\\
 \end{comment}
 
-\textbf{GP-UCB:} $x_t = \arg \max_{x \in D} \mu_{t-1}(x) + \beta_t \sigma_{t-1}(x)$\\
+\textbf{GP-UCB:} $x_t = \arg \max_{x \in D} \mu_{t-1}(x) + \beta_t \sigma_{t-1}(x)$; prob $1 - \delta$ $\frac{R_T}{T} = \mathcal{O(\sqrt{\frac{\beta_T \gamma_T}{T}})}$
 \begin{comment}
 	The goal is to maximise the upper confidence bound.
 	\textbf{Assumption:} The underlying function really is something like the prior, f.e. a Gaussian. Also, we need this to hold for all the points, so we need to do a union bound over the points. This can be solved by using a large constant $\beta$.\\
@@ -99,15 +101,11 @@ $I(X;Y) = H(Y) - H(Y|X) = H(Y) - H(\epsilon) \\
 \end{comment}
 
 \textbf{Reget:}$\frac{1}{T}\sum^T[f(x^*) - f(x_t)] = O(\sqrt{\frac{\gamma_T}{T}}), \gamma_T = \max_{\leq T} I(f;y_s)$\\
-\textbf{Lin:}$\gamma_T = O(d \log T)$,\textbf{Exp}$= O((log T)^{d+1})$,\textbf{Matrn}$= O(TlogT)$\\
+\textbf{Lin:}$\gamma_T = O(d \log T)$,\textbf{Exp}$= O((log T)^{d+1})$,\textbf{Matrn}$= O(TlogT)$
 \begin{comment}
 	\textbf{Intuition:} Depending on the kernel, the regret has different convergence/ regret guarantees.\\
 \end{comment}
-
+\textbf{PI}$(x, \mu, \sigma) = P(f(x) \geq f^*) = \Phi(\frac{\mu(x) - f^*}{\sigma(x)})$
+\textbf{EI}$(x, \mu, \sigma) = max(0, f(x) - f^*) = \mathbb{E}_{f|D}[(f(x) - f^*)_+] $, closed form for $\mathcal{N}$,
+same shape as plot \\
 \textbf{Thompson:} $\hat{f} \sim P(f|x_{1:n}, y_{1:n}), x_{t+1} \in \argmax \hat{f}(x)$
-
-
-
-
-
-

@@ -9,11 +9,12 @@
 % PARAMETER TO SHORTEN DOCUMENT
 \newtoggle{shortdocument}
 \toggletrue{shortdocument}
-%\togglefalse{shortdocument}
+% \togglefalse{shortdocument}
 
 % PARAMETER TO SHOW COMMENTS
 \newtoggle{showcomments}
 \togglefalse{showcomments}
+\toggletrue{showcomments}
 
 
 % DECREASE LINE SPACING IF REQUESTED
@@ -24,9 +25,9 @@
 
 % PAPER LAYOUT
 \iftoggle{shortdocument}{
-\usepackage[margin=0.25cm,twoside]{geometry}
+\usepackage[margin=0.2cm,twoside]{geometry}
 }{
-\usepackage[margin=0.5cm,twoside,bindingoffset=9mm]{geometry}
+\usepackage[margin=0.1cm,twoside,bindingoffset=9mm]{geometry}
 }
 
 % LANDSCAPE PACKAGE
@@ -76,7 +77,7 @@
 
 % PARAGRAPH LAYOUT
 \setlength\parindent{0pt}	% indentation
-\setlength\parskip{2pt}		% space between paragraphs
+\setlength\parskip{1pt}		% space between paragraphs
 
 % LANGUAGE SETTINGS
 %\usepackage[ngerman]{babel} % Silbentrennung (und Deutsche Titel)
@@ -304,7 +305,7 @@
 \titleformat{\subsubsection}{\bfseries}
     {\color{sectioncolor}\rule[0.35ex]{0pt}{0pt}
     \thesubsubsection\,\rule[0.35ex]{8pt}{0.5pt}\,}{0em}
-    {\color{sectioncolor}\testwidth{#1}\,\raisedrulefill[0.35ex]{0.5pt}}
+    {\color{sectioncolor}\testwidth{#1}\,\raisedrulefill[0.35ex]{0.1pt}}
 % title spacings
 \iftoggle{shortdocument}{
 \titlespacing*{\part}
@@ -387,6 +388,7 @@
 
 \input{Probability}
 \input{BayesianLinearRegression}
+\input{KalmanFilter.tex}
 \input{GaussianProcess}
 \input{VariationalInference}
 \input{MonteCarloSampling}

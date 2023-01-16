@@ -1,0 +1,11 @@
+\section{Kalman filter}
+
+$x_0 \sim \mathcal{N}(\mu, \Sigma)$; $x_{t+1} = F x_t + \epsilon$; $Y_t = H x_t + \nu_t$; $\epsilon \sim \mathcal{N}(0, \Sigma_x)$
+
+$x_{t+1} | y_{1:t+1} \sim \mathcal{N}(\mu_{t+1}, \Sigma_{t+1})$;
+$\mu_{t+1} = F \mu_{t} + K_{t+1} (y_{t+1} - H F \mu_{t})$
+$\Sigma_{t+1} = (I - K_{t+1})(F \Sigma_t F^T + \Sigma_x )$; 
+$\hat{\mu}_{t+1}^{pred} = F \mu_t$,
+$\hat{\Sigma}_{t+1}^{pred} =$ 1. ()
+
+$K_{t+1} = (F \Sigma_t F^T + \Sigma_x)H^T(H(F \Sigma_t F^T + \Sigma_x)H^T + \Sigma_y)^{-1}$

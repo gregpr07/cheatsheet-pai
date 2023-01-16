@@ -35,14 +35,14 @@ $P(X_1,..,X_n) = P(X_1)P(X_2|X_1)P(X_3|X_1X_2)..P(X_n|X_1..X_{n-1})$\\
 
 \subsection{Gaussian}
 $\mathcal{N}(x;\Sigma,\mu) = \frac{1}{\sqrt{(2\pi)^{n} |\Sigma|}} \exp(-\frac{1}{2}(x-\mu)^T \Sigma^{-1} (x-\mu))$, $O(n^2)$ var\\
-\textbf{Cov(x$_i$, x$_j$):} $\mathbb{E}[(x_i-\mu_i)(x_j-\mu_j)]$\\
+\textbf{Cov(x$_i$, x$_j$):} $\mathbb{E}[(x_i-\mu_i)(x_j-\mu_j)]$;  generally $O(2^n -1)$ params \\
 \begin{comment}
 	The Gaussian is very important due to the ease of manipulation and the fact, that all distributions are driven towards a gaussian as stated in the central limit theorem.\\
 	\textbf{Dimensionality:} For a usual distribution with n parameters, e.g. binary $P(X_1,..,X_n)$, we need $2^n-1$ variables. With a compositional Gaussian only $O(n^2)$.\\
 	\textbf{Marginalization:} The cost of marginalisation is also huge with standart (binary distributions), need to sum up all combinations of other variables $O(2^{n-1)})$.\\
 \end{comment}
 
-\textbf{Marginal:} $X_A = [X_{i_1},...,X_{i_k}] \sim \cN(\mu_A, \Sigma_{AA})$\\
+\textbf{Marginal:} $X_A = [X_{i_1},...,X_{i_k}] \sim \cN(\mu_A, \Sigma_{AA})$
 
 \textbf{Conditional:} $p(X_A | X_B = x_B) = \mathcal{N}(\mu_{A|B}, \Sigma_{A|B})$\\ 
 $\mu_{A|B} = \mu_A + \Sigma_{AB}\Sigma^{-1}_{BB}(x_B - \mu_B)$, $\Sigma_{A|B} = \Sigma_{AA} - \Sigma_{AB}\Sigma^{-1}_{BB} \Sigma_{BA}$\\
@@ -54,9 +54,20 @@ $\mu_{A|B} = \mu_A + \Sigma_{AB}\Sigma^{-1}_{BB}(x_B - \mu_B)$, $\Sigma_{A|B} = 
 
 \textbf{Add:} $X_1 + X_2 \sim \mathcal{N}(\mu_1 + \mu_2, \Sigma_1 + \Sigma_2), X_1+s \sim \mathcal{N}(\mu_1 + s, \Sigma_1)$
 
+\textbf{LOTP} $p(x) = \int p(x | y) p(y) dy$; $\mathbb{E}[g(X)] = \int g(x) p(x) dx$
+
+$\mathbb{E}_Y[\mathbb{E}_x[X|y]] = \mathbb{E}_X[X]$; $\mathbb{V}[AX] = A\mathbb{V}[X]A^T$
+
+\textbf{TOT VAR} = $\mathbb{V}_x[X] = \mathbb{E}_y [\mathbb{V}_x [X|Y]] + \mathbb{V}_y [\mathbb{E}_x[X|Y]] $
+
+$Ax + b \sim \mathcal{N} (\mu, \epsilon)$; $y \sim \mathcal{N}(0,1)$; $x = \epsilon^{1/2} y + \mu$
+
 \section{Matrix manipulation}
+
+\begin{comment}
 \textbf{$\nabla$(a$^T$w)} = $a$
 \textbf{$\nabla$(w$^T$Bw)} = $2Bw$\\
+\end{comment}
 $\sum(y_i - w^T x_i)^2 = (y-Xw)^T(y-Xw) = ||y-Xw||^2$\\
 \textbf{Woodbury:} $U(VU + I) = (UV+I)U$\\
  $(A + xx^T)^{-1} = A^{-1} \frac{(A^{-1}x)(A^{-1}x)^T}{1 + x^TA^{-1}x}$\\

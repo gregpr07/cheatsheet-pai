@@ -13,7 +13,9 @@ $P(|\mathbb{E}_P[f(X)] - \frac{1}{N}\sum_i^N f(x_i)| > \epsilon) \leq 2 \exp(-2N
 \end{comment}
 
 \textbf{Approx:} $\frac{1}{Z}Q(x) = P(x)$, MC seq. $X_{1:N}$ with stationary $P(x)$\\
-Prior $P(X_1)$, transitions $P(X_{t+1}|X_t)$ i.i.d of $t$ \\
+Prior $P(X_1)$, transitions $P(X_{t+1}|X_t)$ i.i.d of $t$; each row sums 1 \\
+iff exists t; $\forall x, x'$; $p^{(t)}(x | x') > 0$
+\\
 \begin{comment}
 	The Markov chain is a sequence of Random Variables, mostly the random variables are states in $\{1,..,M\}$.\\
 	The MC is stationary if the transition probabilities are independent of t, e.g. they don't change if t changes.\\
@@ -25,7 +27,7 @@ Prior $P(X_1)$, transitions $P(X_{t+1}|X_t)$ i.i.d of $t$ \\
 	\textbf{Example:} MC (1)-(2), whereas the state (2) can be reached from (1) after t=uneven steps, whereas it can be reached from (2) only after t=even steps.\\
 \end{comment}
 
-\textbf{Statnary:} $\lim_{\infty} P(X_N = x) = \pi(x)$, implied by$\uparrow$, $P(X_1)$ egal\\
+\textbf{Statnary:} $\lim_{\infty} P(X_N = x) = \pi(x)$, impl by$\uparrow$, $1 \cdot \pi^T = P^T \pi^T$\\
 
 \textbf{Sample:} $x_1 \sim P(X_1), x_n \sim P(X_N | X_{N-1} = x_{N-1})$\\
 
@@ -42,10 +44,14 @@ Given unnormalized distribution Q(x), we want to design a Markov chain with stat
 	= \frac{1}{Z}Q(x)$\\
 \end{comment}
 
+\textbf{Fund Th of MC} $\lim _{t \to \infty } q_t = \pi ; \; \forall q_0$
+
+\textbf{Ergodic th} $\frac{1}{n} \sum_i f(x_i) \rightarrow \sum_{x} \pi (x) f(x) = \mathbb{E}_{x \sim \pi} [f(x)]$
+
 \subsection{Metropolis Hastings}
 \textbf{1) Proposal:} Given $X_t=x$, sample $x' \sim R(X' | X=x)$\\
-\textbf{2) Accept:} w/ probability $\alpha = \min (1, \frac{Q(x')R(x|x')}{Q(x)R(x'|x)})$\\
-\textbf{Theorem:} Stationary is $Z^{-1}Q(x)$\\
+\textbf{2) Accept:} w/ probability $\alpha = \min (1, \frac{Q(x')R(x|x')}{Q(x)R(x'|x)})$ (if $\alpha < u$)\\
+\textbf{Theorem:} Stationary is $\frac{1}{Z}Q(x)$ $\forall $arbitrary $r$\\
 \begin{comment}
 	The performance depends heavily on what we choose as proposal distribution R.\\
 \end{comment}
@@ -58,7 +64,10 @@ $\uparrow$ sat. balance equation, practical variant not. $P(X_i| x_{-i})$ eff.\\
 	This can be done efficiently, as the normalizer has to be computed over all $x_i$, which are limited in f.e. a categorical distribution.\\
 \end{comment}
 
-\textbf{LLN (Ergodic):} $lim_{N\rightarrow \infty} \frac{1}{N} \sum_i^N f(x_i) = \sum_{x \in D} \pi(x)f(x)$\\
+\textbf{LLN (Ergodic):} $lim_{N\rightarrow \infty}
+\frac{1}{N} \sum_i^N f(x_i) = \sum_{x \in D} \pi(x)f(x)$\\
+$D$ finite state space, $f$ defined on D, stat dist $\pi$, $X_{1:n}$ EMC
+
 \begin{comment}
 By design of the Markov Chain, the samples depend on each other, so the law of large numbers and the complexity bounds do not apply.\\
 	Special case is when the Markov chain is Ergodic and the state space D is finite with stationary $\pi$.
@@ -86,15 +95,11 @@ $R(x'|x) = \cN(x';x;\tau I) \Rightarrow \alpha = \min \{ 1, \exp(f(x) - f(x')) \
 	\textbf{Note:} The Algo could get stuck.\\
 \end{comment}
 
-$R(.|.) = \cN(x';x \text{-} \tau \nabla f(x);2\tau I)$, eval. $f(x)$ both steps\\
+$R(.|.) = \cN(x';x \text{-} \tau \nabla f(x);2\tau I)$; if log-concave dist mix t poly(n)\\
 \begin{comment}
 	MALA incorporates Langevin dynamics. We sample R in direction of the Mode of the energy function, this can help with the direction.\\
 	Gradient computation can be expensive, there is a version where stochastic gradients are used.\\
 \end{comment}
 
-
-
-
-
-
-
+\textbf{SGLD}
+algo; \textbf{1} $i_{1:m} \sim U[{1:n}]$ \textbf{2} $\epsilon{t} \sim \mathcal{N}(0, 2\eta_t I)$ \textbf{3} $\theta_{t+1} = \theta_t + \eta_t (\nabla \log p(\theta_t) + \frac{n}{m} \sum_j^m \nabla log p(y_{i_j} | \theta_t x_{i_j})) + \epsilon_t$; $\eta_t \in O(t^{-1/3})$

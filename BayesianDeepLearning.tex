@@ -6,9 +6,7 @@
 \begin{comment}
 	We want to treat the weights of a neural network as distributions, for which we can define uncertainty as well.\\
 \end{comment}
-
 \textbf{Neural Net:} $f(x;w) = \varphi(W_1\varphi(W_2(..\varphi(W_l x)))$\\
-
 \textbf{Basic Unit:} $v_i^{(l)} = \varphi(w_i^{(l)T} v^{(l-1)})$\\
 \begin{comment}
 	We want each unit to be differentiable, such that efficient computation graphs can be automatically created.\\
@@ -17,7 +15,7 @@
 \textbf{tanh(z)} $= \frac{\exp(z) - \exp(-z)}{\exp(z) + \exp(-z)}$
 \textbf{reLu(z)} $= \max(z,0)$\\
 
-\textbf{Bayesian NN:} $p(y | x,\theta) = \cN(y; f_1(x, \theta), f_2(x, \theta))$\\
+\textbf{Bayesian NN:} $p(y | x,\theta) = \cN(y; f_1(x, \theta), \exp(f_2(x, \theta)))$\\
 
 \textbf{MAP:} $\hat{\theta} = \arg\min_\theta \lambda ||\theta||^2 + \sum_{i=1}^n \log \sigma^2(x_i,\theta) + \frac{(y_i-\mu(x_i, \theta))^2}{\sigma^2(x_i, \theta)}$\\
 \begin{comment}
@@ -38,7 +36,7 @@
 \approx \bar{\mu}(x^*) 
 =\frac{1}{m}\sum_j^m \mu(x^*, \theta^{(j)})$\\
 
-$Var[y^*|X,y,x^*] = Var[\mathbb{E}[y^*|X,y,x^*]] + \mathbb{E}[Var[y^*|X,y,x^*]] \\
+$Var[y^*|X,y,x^*] = \mathbb{E}_\theta[Var_{y^*}[y^*|x^*, \theta]] + Var_\theta[\mathbb{E}_{y^*}[y^*|x^*, \theta]] \\
 = \frac{1}{m}\sum_j^m \sigma^2(x^*, \theta^{(j)}) + \frac{1}{m}\sum_j^m (\mu(x^*, \theta^{(j)}) - \bar{\mu}(x^*))^2$\\
 \begin{comment}
 	The variance of the prediction is dependent on the variance of the weights.\\
@@ -60,19 +58,5 @@ $Var[y^*|X,y,x^*] = Var[\mathbb{E}[y^*|X,y,x^*]] + \mathbb{E}[Var[y^*|X,y,x^*]] 
 	Gives probability distribution over the c classes.\\
 	We can inject noise $softmax(f+\epsilon)$, saying that we are unsure about some parts of the predictive classes. This is analog to adding Epistemic noise, just for classification.\\
 \end{comment}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Acc$_m$ = $\frac{1}{|B_m|} \sum_i |\hat{y_i} - y_i|$; Conf$_m$ $ = \frac{1}{|B_m|} \sum_i \hat{P_i} $; ideally same
+$l_{ece} = \sum_m^M \frac{|B_m|}{n} |$Acc$_m(B_m) - $Conf$_m(B_m)|$; $l_{mce} = \max_m ...$

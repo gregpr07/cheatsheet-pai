@@ -55,8 +55,9 @@ $| p\sim \cN(\mu_{1:d}, [\sigma_{1:d}^2]),\\ q\sim \cN(0, \sigma_p^2 I) \rightar
 
 \textbf{Entropy:} $H(q) = - \int q(\theta) \log q(\theta) d\theta = \mathbb{E}_{\theta \sim q} [-\log q(\theta)]$\\
 \textbf{Prod:} $H(q) = \sum_{i=1}^d H(q_i)$, $H(\cN(\mu, \Sigma)) = \frac{1}{2} ln(|2 \pi e \Sigma|)$\\
+	\textbf{Diagonal Gaussian:} $H(\cN) = \frac{1}{2} ln(|2 \pi e \Sigma|)$
 \begin{comment}
-	\textbf{Diagonal Gaussian:} $H(\cN) = \frac{1}{2} ln(|2 \pi e \Sigma|) = \frac{1}{2} ln(2\pi e) + \sum_i^d ln(\sigma_i)$\\
+ $= \frac{1}{2} ln(2\pi e) + \sum_i^d ln(\sigma_i)$\\
 \end{comment}
 
 \textbf{KL:} $q^* \in \arg \min_q KL(q||p) = \arg \min_{q_\lambda} \mathbb{E}_{\theta \sim q}[log \frac{q(\theta)}{\frac{1}{Z	} p(\theta, y)}]\\
